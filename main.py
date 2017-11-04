@@ -6,7 +6,15 @@
 
 import RPi.GPIO as GPIO, time, math
 
-while True:
+GPIO.setmode(GPIO.BCM)
+
+try:
+    while True:
+        #Buttons to modify sound
+        
+
+except (KeyboardInterrupt, SystemExit):
+    print("Exiting...")
 
 
-    
+GPIO.cleanup()
