@@ -22,7 +22,7 @@ chunk = 1024
 p = pyaudio.PyAudio()
 
 song = wave.open(audioFile, 'rb')
-songSciPy = scipy.io.wavfile.read(audioFile)
+samprate, wavdata = scipy.io.wavfile.read(audioFile)
 #open stream
 stream = p.open(format = p.get_format_from_width(song.getsampwidth()),
                 channels = song.getnchannels(),
@@ -33,11 +33,6 @@ stream = p.open(format = p.get_format_from_width(song.getsampwidth()),
 data = song.readframes(chunk)
 
 frameLocation = 0
-streamMax = np.nanmax(songSciPy[1])
-streamMin = np.nanmin(songSciPy[1])
-
-print(str(streamMax))
-print(str(streamMin))
 
 try:
     #while True:
@@ -49,7 +44,7 @@ try:
         stream.write(data)
         #print(int.from_bytes(data, 'big'))
         data = song.readframes(chunk)
-        print(np.average(songSciPy[1][frameLocation][0]))
+        print(np.average(wavdata[frameLocation]))
         frameLocation += 1
 
 
