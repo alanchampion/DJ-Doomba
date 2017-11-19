@@ -52,7 +52,7 @@ class Audio:
         self.data = self.song.readframes(self.chunk)
 
         # get levels
-        self.levels = np.average(self.wavdata[self.frameLocation])
+        self.levels = np.abs(np.average(self.wavdata[self.frameLocation]))
 
         # advance frames
         self.frameLocation += self.chunk
