@@ -26,7 +26,7 @@ class Audio:
         self.data = self.song.readframes(self.chunk)
         self.frameLocation = 0
 
-    def play(self):
+    def playFull(self):
         try:
             while self.data:
                 self.stream.write(self.data)
@@ -41,3 +41,17 @@ class Audio:
 
             #close PyAudio
             self.p.terminate()
+
+    def playFrame(self):
+        self.stream.write(self.data)
+        self.data = self.song.readframes(self.chunk)
+        print(np.average(self.wavdata[self.frameLocation]))
+        self.frameLocation += self.chunk
+
+    def close(self):
+        #stop stream
+        self.stream.stop_stream()
+        self.stream.close()
+
+        #close PyAudio
+        self.p.terminate()
