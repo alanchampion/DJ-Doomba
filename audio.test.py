@@ -9,6 +9,7 @@ audioTestObject = audio.Audio('audio/lifeOnMars.wav')
 # this way allows you to interact with the object and do other stuff, such as printing levels
 while audioTestObject.data:
     audioTestObject.playFrame()
-    print(audioTestObject.levels)
+    # print(audioTestObject.calculatedLevelAverage)
+    print(audioTestObject.calculatedLevel)
 
 audioTestObject.close()

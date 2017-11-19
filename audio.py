@@ -28,7 +28,13 @@ class Audio:
 
         # setup initial data
         self.frameLocation = 0
-        self.levels = 0
+        self.level = 0
+
+        self.maxLevel = np.amax(np.abs(self.wavdata))
+
+        # number of bins
+        self.bins = 4
+        self.calculatedLevel = 0
 
     # plays the full song
     def playFull(self):
@@ -52,7 +58,12 @@ class Audio:
         self.data = self.song.readframes(self.chunk)
 
         # get levels
-        self.levels = np.abs(np.average(self.wavdata[self.frameLocation]))
+        self.level = np.abs(self.wavdata[self.frameLocation]) + 1
+        self.levelAverage = np.average(np.abs(self.wavdata[self.frameLocation])) + 1
+
+        # get bins of levels
+        self.calculatedLevel = self.__bins__(self.level)
+        self.calculatedLevelAverage = self.__bins__(self.levelAverage)
 
         # advance frames
         self.frameLocation += self.chunk
@@ -65,3 +76,6 @@ class Audio:
 
         #close PyAudio
         self.p.terminate()
+
+    def __bins__(self, level):
+        return np.floor((np.log(level) / np.log(self.maxLevel)) * (self.bins + 1))
