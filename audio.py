@@ -4,8 +4,8 @@ import pyaudio
 import numpy as np
 
 class Audio:
-    def __init__(self):
-        self.audioFile = 'audio/SmashMouth-AllStar.wav'
+    def __init__(self, audioFile='audio/SmashMouth-AllStar.wav'):
+        self.audioFile = audioFile
 
         #define stream chunk
         self.chunk = 1024
@@ -41,6 +41,3 @@ class Audio:
 
             #close PyAudio
             self.p.terminate()
-
-test = Audio()
-test.play()
