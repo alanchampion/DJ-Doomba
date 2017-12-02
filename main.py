@@ -10,7 +10,7 @@ from datetime import datetime
 from datetime import timedelta
 
 # song config
-songs = ['audio/lifeOnMars.wav', 'audio/SmashMouth-AllStar.wav']
+songs = ['/home/pi/DJ-Doomba/audio/lifeOnMars.wav', '/home/pi/DJ-Doomba/audio/SmashMouth-AllStar.wav']
 songChoice = 0
 audioObject = audio.Audio(songs[songChoice])
 playing = True
@@ -124,7 +124,6 @@ try:
 
             checkPlaying()
             checkSkip()
-            checkRotation()
 
         audioObject.changeSong(songs[songChoice % len(songs)])
 
