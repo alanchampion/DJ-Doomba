@@ -10,7 +10,7 @@ from datetime import datetime
 from datetime import timedelta
 
 # song config
-songs = ['audio/lifeOnMars.wav', 'audio/Short_Skirt_Long_Jacket_by_Cake.wav', 'audio/SmashMouth-AllStar.wav']
+songs = ['audio/lifeOnMars.wav', 'audio/SmashMouth-AllStar.wav']
 songChoice = 0
 audioObject = audio.Audio(songs[songChoice])
 playing = True
@@ -20,11 +20,20 @@ playPauseButton = 27
 skipButton = 26
 motorPin = 12
 
+lightPin1 = 18
+lightPin2 = 19
+lightPin3 = 20
+lightPin4 = 21
+
 # GPIO Setup
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(playPauseButton, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(skipButton, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(motorPin, GPIO.OUT)
+GPIO.setup(lightPin1, GPIO.OUT)
+GPIO.setup(lightPin2, GPIO.OUT)
+GPIO.setup(lightPin3, GPIO.OUT)
+GPIO.setup(lightPin4, GPIO.OUT)
 
 # button setup
 # handles only pressing once by storing previous state
@@ -49,6 +58,7 @@ def checkPlaying():
         global playing
         print("Pausing")
         playing = not playing
+        setLights(0)
 
     pauseButtonState = button
 
@@ -85,23 +95,38 @@ def checkRotation():
             motor.ChangeDutyCycle(angle)
             prevTime = curTime
 
+def setLights(level):
+    try:
+        GPIO.output(lightPin1, int(level) >= 1)
+        GPIO.output(lightPin2, int(level) >= 2)
+        GPIO.output(lightPin3, int(level) >= 3)
+        GPIO.output(lightPin4, int(level) >= 4)
+
+    except:
+        GPIO.output(lightPin1, False)
+        GPIO.output(lightPin2, False)
+        GPIO.output(lightPin3, False)
+        GPIO.output(lightPin4, False)
+
 try:
     motor.start(angle)
-    while audioObject.data:
-        while playing:
-            audioObject.playFrame()
-            # print(audioObject.calculatedLevelAverage)
-            # print(audioObject.calculatedLevel)
-            # print(playing)
+    while True:
+        while audioObject.data:
+            while playing:
+                audioObject.playFrame()
+                # print(audioObject.calculatedLevelAverage)
+                # print(audioObject.calculatedLevel)
+                # print(playing)
+                setLights(audioObject.calculatedLevel[0])
+                checkPlaying()
+                checkSkip()
+                checkRotation()
+
             checkPlaying()
             checkSkip()
             checkRotation()
 
-        checkPlaying()
-        checkSkip()
-        checkRotation()
-
-    audioObject.close()
+        audioObject.changeSong(songs[songChoice % len(songs)])
 
 
 except (KeyboardInterrupt, SystemExit):

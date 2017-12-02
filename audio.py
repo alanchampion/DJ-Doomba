@@ -76,16 +76,25 @@ class Audio:
         self.stream.write(self.data)
         self.data = self.song.readframes(self.chunk)
 
-        # get levels
-        self.level = np.abs(self.wavdata[self.frameLocation]) + 1
-        self.levelAverage = np.average(np.abs(self.wavdata[self.frameLocation])) + 1
+        try:
+            # get levels
+            self.level = np.abs(self.wavdata[self.frameLocation]) + 1
+            self.levelAverage = np.average(np.abs(self.wavdata[self.frameLocation])) + 1
 
-        # get bins of levels
-        self.calculatedLevel = self.__bins__(self.level)
-        self.calculatedLevelAverage = self.__bins__(self.levelAverage)
+            # get bins of levels
+            self.calculatedLevel = self.__bins__(self.level)
+            self.calculatedLevelAverage = self.__bins__(self.levelAverage)
 
-        # advance frames
-        self.frameLocation += self.chunk
+        except:
+            self.level = np.array([0, 0])
+            self.levelAverage = 0.0
+
+            self.calculatedLevel = np.array([0, 0])
+            self.calculatedLevelAverage = 0.0
+
+        finally:
+            # advance frames
+            self.frameLocation += self.chunk
 
     # closes the object
     def close(self):
