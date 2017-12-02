@@ -9,7 +9,7 @@ class Audio:
         self.audioFile = audioFile
 
         # define stream chunk
-        self.chunk = 1024
+        self.chunk = 128
 
         # define pyaudio
         self.p = pyaudio.PyAudio()
@@ -21,7 +21,7 @@ class Audio:
             format = self.p.get_format_from_width(self.song.getsampwidth()),
             channels = self.song.getnchannels(),
             rate = self.song.getframerate(),
-            frames_per_buffer = 48000,
+            frames_per_buffer = 44100,
             output = True)
 
         # read data
