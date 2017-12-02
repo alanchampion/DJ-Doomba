@@ -10,46 +10,70 @@ import audio
 # song config
 songs = ['audio/lifeOnMars.wav', 'audio/Short_Skirt_Long_Jacket_by_Cake.wav', 'audio/SmashMouth-AllStar.wav']
 songChoice = 0
-audioTestObject = audio.Audio(songs[songChoice])
+audioObject = audio.Audio(songs[songChoice])
 playing = True
 
 # pin config
 playPauseButton = 27
+skipButton = 26
 
 # GPIO Setup
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(playPauseButton, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(skipButton, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 # button setup
 # handles only pressing once by storing previous state
-buttonState = False
+pauseButtonState = False
+skipButtonState = False
 
 def buttonInput(button):
     return GPIO.input(button) == 1
 
 # handles pausing the song on button press
 def checkPlaying():
-    global buttonState
+    global pauseButtonState
+    global playPauseButton
     button = buttonInput(playPauseButton)
-    if button == False and button != buttonState:
+    if button == False and button != pauseButtonState:
         global playing
+        print("Pausing")
         playing = not playing
 
-    buttonState = button
+    pauseButtonState = button
 
+# handles skipping the song
+def checkSkip():
+    global skipButtonState
+    global skipButton
+    button = buttonInput(skipButton)
+    if button == False and button != skipButtonState:
+        global songChoice
+        global songs
+        global audioObject
+        global playing
+        print("Skiping")
+        audioObject.close
+        songChoice += 1
+        audioObject = audio.Audio(songs[songChoice % len(songs)])
+        playing = True
+
+    skipButtonState = button
 
 try:
-    while audioTestObject.data:
+    while audioObject.data:
         while playing:
-            audioTestObject.playFrame()
-            # print(audioTestObject.calculatedLevelAverage)
-            # print(audioTestObject.calculatedLevel)
+            audioObject.playFrame()
+            # print(audioObject.calculatedLevelAverage)
+            # print(audioObject.calculatedLevel)
             # print(playing)
             checkPlaying()
+            checkSkip()
 
         checkPlaying()
+        checkSkip()
 
-    audioTestObject.close()
+    audioObject.close()
 
 
 except (KeyboardInterrupt, SystemExit):
