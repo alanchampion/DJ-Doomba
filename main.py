@@ -83,9 +83,10 @@ def checkRotation():
         elif(angle == 12.5):
             angle = 2.5
             motor.ChangeDutyCycle(angle)
-            prevTime = curTime            
+            prevTime = curTime
 
 try:
+    motor.start(angle)
     while audioObject.data:
         while playing:
             audioObject.playFrame()
@@ -105,6 +106,7 @@ try:
 
 except (KeyboardInterrupt, SystemExit):
     print("Exiting...")
+    motor.stop()
 
 
 GPIO.cleanup()
