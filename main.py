@@ -5,12 +5,19 @@
 #to the top is a rotating tentacle that wields a knife to intimidate your enemies.
 
 import RPi.GPIO as GPIO, time, math
+import audio
+
+audioTestObject = audio.Audio()
 
 GPIO.setmode(GPIO.BCM)
 
 try:
-    while True:
-        #Buttons to modify sound
+    while audioTestObject.data:
+        audioTestObject.playFrame()
+        # print(audioTestObject.calculatedLevelAverage)
+        print(audioTestObject.calculatedLevel)
+
+    audioTestObject.close()
 
 
 except (KeyboardInterrupt, SystemExit):
