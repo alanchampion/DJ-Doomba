@@ -18,7 +18,7 @@ playPauseButton = 27
 
 # GPIO Setup
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(playPauseButton, GPIO.IN)
+GPIO.setup(playPauseButton, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 # button setup
 # handles only pressing once by storing previous state
