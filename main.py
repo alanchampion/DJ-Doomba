@@ -6,7 +6,6 @@
 
 import RPi.GPIO as GPIO, time, math
 import audio
-# import gpiozero as gz
 
 # song config
 songs = ['audio/lifeOnMars.wav', 'audio/Short_Skirt_Long_Jacket_by_Cake.wav', 'audio/SmashMouth-AllStar.wav']
@@ -20,7 +19,6 @@ playPauseButton = 27
 # GPIO Setup
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(playPauseButton, GPIO.IN)
-# playPauseButton = gz.Button(playPauseButtonPin)
 
 # button setup
 # handles only pressing once by storing previous state
