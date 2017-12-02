@@ -53,9 +53,8 @@ def checkSkip():
         global audioObject
         global playing
         print("Skiping")
-        audioObject.close
         songChoice += 1
-        audioObject = audio.Audio(songs[songChoice % len(songs)])
+        audioObject.changeSong(songs[songChoice % len(songs)])
         playing = True
 
     skipButtonState = button
