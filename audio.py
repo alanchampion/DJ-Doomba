@@ -52,6 +52,9 @@ class Audio:
             #close PyAudio
             self.p.terminate()
 
+            # close wav file
+            self.song.close()
+
     # plays an individual frame
     def playFrame(self):
         # handle stream
@@ -75,8 +78,11 @@ class Audio:
         self.stream.stop_stream()
         self.stream.close()
 
-        #close PyAudio
+        # close PyAudio
         self.p.terminate()
+
+        # close wav file
+        self.song.close()
 
     def __bins__(self, level):
         return np.floor((np.log(level) / np.log(self.maxLevel)) * (self.bins + 1))
