@@ -7,6 +7,8 @@
 import RPi.GPIO as GPIO, time, math
 import audio
 
+songs = ['audio/lifeOnMars.wav', 'audio/Short_Skirt_Long_Jacket_by_Cake.wav', 'audio/SmashMouth-AllStar.wav']
+
 audioTestObject = audio.Audio()
 
 GPIO.setmode(GPIO.BCM)
