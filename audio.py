@@ -21,6 +21,7 @@ class Audio:
             format = self.p.get_format_from_width(self.song.getsampwidth()),
             channels = self.song.getnchannels(),
             rate = self.song.getframerate(),
+            frames_per_buffer = 48000,
             output = True)
 
         # read data
