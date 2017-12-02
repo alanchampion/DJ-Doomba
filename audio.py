@@ -60,8 +60,6 @@ class Audio:
 
         # get levels
         self.level = np.abs(self.wavdata[self.frameLocation]) + 1
-        # TODO: look into averaging all data within the chunk
-        # self.level = np.average(np.abs(self.wavdata[self.frameLocation:self.frameLocation + self.chunk]), axis=0)
         self.levelAverage = np.average(np.abs(self.wavdata[self.frameLocation])) + 1
 
         # get bins of levels
@@ -82,3 +80,4 @@ class Audio:
 
     def __bins__(self, level):
         return np.floor((np.log(level) / np.log(self.maxLevel)) * (self.bins + 1))
+
