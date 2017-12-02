@@ -6,6 +6,8 @@
 
 import RPi.GPIO as GPIO, time, math
 import audio
+from datetime import datetime
+from datetime import timedelta
 
 # song config
 songs = ['audio/lifeOnMars.wav', 'audio/Short_Skirt_Long_Jacket_by_Cake.wav', 'audio/SmashMouth-AllStar.wav']
@@ -16,16 +18,24 @@ playing = True
 # pin config
 playPauseButton = 27
 skipButton = 26
+motorPin = 12
 
 # GPIO Setup
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(playPauseButton, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(skipButton, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(motorPin, GPIO.OUT)
 
 # button setup
 # handles only pressing once by storing previous state
 pauseButtonState = False
 skipButtonState = False
+
+# motor setu
+motor = GPIO.PWM(motorPin, 50)
+sleepTime = timedelta(days=0, seconds=0, microseconds=450000)
+prevTime = datetime.today()
+angle = 2.5
 
 def buttonInput(button):
     return GPIO.input(button) == 1
@@ -60,6 +70,22 @@ def checkSkip():
 
     skipButtonState = button
 
+def checkRotation():
+    global angle
+    global prevTime
+    global motor
+
+    curTime = datetime.today()
+    if(curTime-prevTime >= sleepTime):
+        if(angle == 2.5):
+            angle = 12.5
+            motor.ChangeDutyCycle(angle)
+            prevTime = curTime
+        elif(angle == 12.5):
+            angle = 2.5
+            motor.ChangeDutyCycle(angle)
+            prevTime = curTime            
+
 try:
     while audioObject.data:
         while playing:
@@ -69,9 +95,11 @@ try:
             # print(playing)
             checkPlaying()
             checkSkip()
+            checkRotation()
 
         checkPlaying()
         checkSkip()
+        checkRotation()
 
     audioObject.close()
 
