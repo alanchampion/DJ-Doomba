@@ -11,6 +11,20 @@ class Audio:
         # define stream chunk
         self.chunk = 128
 
+        self.initSong()
+
+        # number of bins
+        self.bins = 4
+        self.calculatedLevel = 0
+
+    # changes song
+    def changeSong(self, audioFile='audio/SmashMouth-AllStar.wav'):
+        self.audioFile = audioFile
+        self.close()
+
+        self.initSong()
+
+    def initSong(self):
         # define pyaudio
         self.p = pyaudio.PyAudio()
         self.song = wave.open(self.audioFile, 'rb')
@@ -33,10 +47,6 @@ class Audio:
 
         self.maxLevel = np.amax(np.abs(self.wavdata))
 
-        # number of bins
-        self.bins = 4
-        self.calculatedLevel = 0
-
     # plays the full song
     def playFull(self):
         try:
@@ -54,6 +64,11 @@ class Audio:
 
             # close wav file
             self.song.close()
+
+            # dels
+            del self.stream
+            del self.p
+            del self.song
 
     # plays an individual frame
     def playFrame(self):
