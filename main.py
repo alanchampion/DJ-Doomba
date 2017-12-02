@@ -9,7 +9,9 @@ import audio
 
 songs = ['audio/lifeOnMars.wav', 'audio/Short_Skirt_Long_Jacket_by_Cake.wav', 'audio/SmashMouth-AllStar.wav']
 
-audioTestObject = audio.Audio()
+songChoice = 0
+
+audioTestObject = audio.Audio(songs[songChoice])
 
 GPIO.setmode(GPIO.BCM)
 
@@ -27,3 +29,4 @@ except (KeyboardInterrupt, SystemExit):
 
 
 GPIO.cleanup()
+
